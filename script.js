@@ -1,3 +1,13 @@
+let displayValue = document.querySelector(".displaytext")
+
+let numButtons = document.querySelectorAll('.number');
+
+for (i of numButtons) {
+  i.addEventListener('click', function(e) {
+    displayValue.textContent += e.target.textContent;
+  });
+}
+
 function add(a, b) {
     return a + b;
 };
