@@ -1,4 +1,4 @@
-let displayValue = document.querySelector(".displaytext")
+let displayValue = document.querySelector(".displaytext");
 
 let numButtons = document.querySelectorAll('.number');
 
@@ -6,7 +6,21 @@ for (i of numButtons) {
   i.addEventListener('click', function(e) {
     displayValue.textContent += e.target.textContent;
   });
-}
+};
+
+let dot = document.querySelector("#dot");
+
+dot.addEventListener('click', function(e) {
+    if (!displayValue.textContent.includes(".")) {
+        displayValue.textContent += e.target.textContent;
+    };
+});
+
+let clear = document.querySelector("#clear");
+
+clear.addEventListener('click', function() {
+    displayValue.textContent = "";
+});
 
 function add(a, b) {
     return a + b;
