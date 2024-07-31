@@ -4,42 +4,30 @@ let numButtons = document.querySelectorAll('.number');
 
 let numDotButtonCount = 0;
 
+let equalsButtonCount = 0;
+
 for (i of numButtons) {
   i.addEventListener('click', function(e) {
-    if (!operatorChoice) {
-        if (displayValue.textContent === "0") {
+        if (displayValue.textContent === "0" || numDotButtonCount === 0) {
             displayValue.textContent = e.target.textContent;
+            numDotButtonCount++;
+            equalsButtonCount = 0;
         } else {    
         displayValue.textContent += e.target.textContent;
         };
-    } else if (!secondNum) {
-        if (numDotButtonCount === 0) {
-            displayValue.textContent = e.target.textContent;
-            numDotButtonCount++;
-        } else {
-            displayValue.textContent += e.target.textContent;
-        }
-        // first numbutton or dot press replaces displayValue.textConter, unless dot, then "0."
-        // subsequent numbutton presses behave like normal
-    };
   });
 };
 
 let dot = document.querySelector("#dot");
 
 dot.addEventListener('click', function(e) {
-    if (!operatorChoice) {
+    if (numDotButtonCount === 0) {
+        displayValue.textContent = "0.";
+        numDotButtonCount++;
+        equalsButtonCount = 0;
+    } else {
         if (!displayValue.textContent.includes(".")) {
-        displayValue.textContent += e.target.textContent;
-        };
-    } else if (!secondNum) {
-        if (numDotButtonCount === 0) {
-            displayValue.textContent = "0.";
-            numDotButtonCount++;
-        } else {
-            if (!displayValue.textContent.includes(".")) {
-                displayValue.textContent += e.target.textContent;
-            };
+            displayValue.textContent += e.target.textContent;
         };
     };
 });
@@ -48,11 +36,11 @@ let opButtons = document.querySelectorAll('.operator');
 
 for (i of opButtons) {
   i.addEventListener('click', function(e) {
-    if (!!displayValue.textContent && !firstNum) {
+    if (!firstNum) {
         firstNum = displayValue.textContent;
-        operatorChoice = e.target.textContent;
+        changeOperator(e);
         numDotButtonCount = 0;  
-    } else if (!!displayValue.textContent && !!firstNum) {
+    } else if (!!firstNum && numDotButtonCount !== 0) {
         if (+displayValue.textContent === 0 && operatorChoice === "/") {
             alert("Silly human please don't divide by 0");
             displayValue.textContent = "0";
@@ -61,15 +49,15 @@ for (i of opButtons) {
             secondNum = displayValue.textContent;
             displayValue.textContent = operate(firstNum, operatorChoice, secondNum);
             firstNum = displayValue.textContent;
-            operatorChoice = e.target.textContent;
+            changeOperator(e);
             secondNum = "";
             numDotButtonCount = 0;
         };
+    } else if (!!firstNum && numDotButtonCount === 0) {
+        changeOperator(e);
     };
   });
 };
-//if displayValue is negative, pressing any operator or equals changes display
-//value to 0
 
 let equals = document.querySelector("#equals");
 
@@ -79,16 +67,16 @@ equals.addEventListener('click', function() {
             alert("Silly human please don't divide by 0");
             displayValue.textContent = "0";
             numDotButtonCount = 0;
-        } else {
+        } else if (equalsButtonCount === 0) {
             secondNum = displayValue.textContent;
             displayValue.textContent = operate(firstNum, operatorChoice, secondNum);
             firstNum = displayValue.textContent;
-            secondNum = "";
             numDotButtonCount = 0;
+            equalsButtonCount++;
+        } else if (equalsButtonCount !== 0) {
+            displayValue.textContent = operate(firstNum, operatorChoice, secondNum);
+            firstNum = displayValue.textContent;
         };
-        // need to be able to keep hitting = button to add the entered 
-        // secondNum to the displayed firstNum, similar problem with operator
-        // buttons
     };
 });
 
@@ -109,8 +97,10 @@ let clear = document.querySelector("#clear");
 clear.addEventListener('click', function() {
     displayValue.textContent = "0";
     firstNum = "";
-    operatorChoice = "";
+    deSelectOperator();
     secondNum = "";
+    numDotButtonCount = 0;
+    equalsButtonCount = 0;
 });
 
 function add(a, b) {
@@ -150,4 +140,22 @@ function operate(first, operator, second) {
     };
 };
 
-//would like current operatorChoice to be highlighted
+function changeOperator(e) {
+    if (!!operatorChoice) {
+        document.querySelector(".currentOpChoice").classList.remove("currentOpChoice");
+    };
+    operatorChoice = e.target.textContent;
+    console.log(e.target);
+    e.target.classList.add("currentOpChoice");
+}
+
+function deSelectOperator() {
+    if (!!operatorChoice) {
+        document.querySelector(".currentOpChoice").classList.remove("currentOpChoice");
+    }
+    operatorChoice = "";
+}
+
+//keyboard support
+
+// '-' -> '9' -> '-' = -9 (fix this)

@@ -62,3 +62,15 @@ body {
 #equals {
     flex: 1 1 0;
 }
+
+.currentOpChoice {
+    border: 3px solid black;
+    background-color: gray;
+}
+
+/* figure out row 4/5 flex issue
+
+change top row/right column appearance by changing 
+background color, :hover, and :active
+
+make it nice (rouunded buttons, display text size scaling */
