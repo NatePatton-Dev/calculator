@@ -104,19 +104,23 @@ clear.addEventListener('click', function() {
 });
 
 function add(a, b) {
-    return a + b;
+    ans = a + b;
+    return Math.round((ans + Number.EPSILON) *100000)/100000;
 };
 
 function subtract(a, b) {
-    return a - b;
+    ans = a - b;
+    return Math.round((ans + Number.EPSILON) *100000)/100000;
 };
 
 function multiply(a, b) {
-    return a * b;
+    ans = a * b;
+    return Math.round((ans + Number.EPSILON) *100000)/100000;
 };
 
 function divide(a, b) {
-    return a / b;
+    ans = a / b;
+    return Math.round((ans + Number.EPSILON) *100000)/100000;
 };
 
 let firstNum 
@@ -145,7 +149,6 @@ function changeOperator(e) {
         document.querySelector(".currentOpChoice").classList.remove("currentOpChoice");
     };
     operatorChoice = e.target.textContent;
-    console.log(e.target);
     e.target.classList.add("currentOpChoice");
 }
 
@@ -156,6 +159,21 @@ function deSelectOperator() {
     operatorChoice = "";
 }
 
-//keyboard support
+let allButtons = document.querySelectorAll("button");
 
-// '-' -> '9' -> '-' = -9 (fix this)
+addEventListener('keydown', function(e) {
+    let key = e.key
+    allButtons.forEach(function(ele) {
+        if (ele.textContent.includes(key) || ele.classList.contains(`k${key}k`)) {
+            ele.click();
+        };
+    });
+});
+
+// would like to figure out how to display numbers too large to fit in display
+
+// would like to make rule to determine if an answer is too large to fit in display, 
+// but has decimals, to round to needed decimal to fit display
+
+// would like to make changes so display can round while the 
+// actual value of firstNum/secondNum is stored in full
