@@ -100,4 +100,5 @@ button:active {
     background-color: gray;
 }
 
-/* figure out row 4/5 flex issue
+/* I think row 4/5 flex issue could be fixed using grid, 
+but we haven't learned grid yet */

@@ -15,6 +15,7 @@ for (i of numButtons) {
         } else {    
         displayValue.textContent += e.target.textContent;
         };
+        e.target.blur();
   });
 };
 
@@ -30,6 +31,7 @@ dot.addEventListener('click', function(e) {
             displayValue.textContent += e.target.textContent;
         };
     };
+    e.target.blur();
 });
 
 let opButtons = document.querySelectorAll('.operator');
@@ -56,12 +58,13 @@ for (i of opButtons) {
     } else if (!!firstNum && numDotButtonCount === 0) {
         changeOperator(e);
     };
+    e.target.blur();
   });
 };
 
 let equals = document.querySelector("#equals");
 
-equals.addEventListener('click', function() {
+equals.addEventListener('click', function(e) {
     if (!!firstNum && !!operatorChoice && !!displayValue.textContent) {
         if (+displayValue.textContent === 0 && operatorChoice === "/") {
             alert("Silly human please don't divide by 0");
@@ -78,11 +81,12 @@ equals.addEventListener('click', function() {
             firstNum = displayValue.textContent;
         };
     };
+    e.target.blur();
 });
 
 let backspace = document.querySelector("#delete");
 
-backspace.addEventListener('click', function() {
+backspace.addEventListener('click', function(e) {
     if (displayValue.textContent !== "0" && numDotButtonCount !== 0) {
         let newDisplayValue = displayValue.textContent.substring(0, displayValue.textContent.length-1);
         if (newDisplayValue === "") {
@@ -90,17 +94,19 @@ backspace.addEventListener('click', function() {
         };
         displayValue.textContent = newDisplayValue;
     };
+    e.target.blur();
 });
 
 let clear = document.querySelector("#clear");
 
-clear.addEventListener('click', function() {
+clear.addEventListener('click', function(e) {
     displayValue.textContent = "0";
     firstNum = "";
     deSelectOperator();
     secondNum = "";
     numDotButtonCount = 0;
     equalsButtonCount = 0;
+    e.target.blur();
 });
 
 function add(a, b) {
